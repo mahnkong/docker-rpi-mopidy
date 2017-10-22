@@ -1,0 +1,24 @@
+sudo: required
+services:
+- docker
+language: bash
+
+install: true
+
+before_script:
+- sudo apt-get --yes --no-install-recommends install binfmt-support qemu-user-static
+- echo ':arm:M::\x7fELF\x01\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\x28\x00:\xff\xff\xff\xff\xff\xff\xff\x00\xff\xff\xff\xff\xff\xff\xff\xff\xfe\xff\xff\xff:/usr/bin/qemu-arm-static:' | sudo tee -a /proc/sys/fs/binfmt_misc/register
+
+script:
+- cp /usr/bin/qemu-arm-static .
+# build image
+- docker build -t mahnkong/docker-rpi-mopidy .
+# push image
+- >
+  if [ "$TRAVIS_BRANCH" == "master" -o "$TRAVIS_TAG" != "" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
+    docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
+    TAG=${TRAVIS_TAG:=latest}
+    docker tag mahnkong/docker-rpi-mopidy mahnkong/docker-rpi-mopidy:$TAG
+    docker push mahnkong/docker-rpi-mopidy:$TAG
+    docker push mahnkong/docker-rpi-mopidy
+  fi
