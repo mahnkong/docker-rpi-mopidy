@@ -16,7 +16,8 @@ RUN wget -q -O - https://apt.mopidy.com/mopidy.gpg | apt-key add - && \
     apt-get autoremove -y && \
     pip install Mopidy-YouTube && \
     pip install Mopidy-Local-SQLite && \
-    pip install Mopidy-Iris
+    pip install Mopidy-Iris && \
+    pip install mopidy-musicbox-webclient
 
 COPY entrypoint.sh /entrypoint.sh
 COPY asound.conf /etc/asound.conf

@@ -14,4 +14,5 @@ The following environment variables can be set to configure the instance:
 
 ```
 ASOUND_PCM_CARD_ID: ID of the sound card for the asound.conf file (Defaults to: "hw:1,0")
+MPD_PROTOCOL: MPD Protocol to be used (Defaults to: "0.17.0" due to compat. issues with mpdroid)
 ```
